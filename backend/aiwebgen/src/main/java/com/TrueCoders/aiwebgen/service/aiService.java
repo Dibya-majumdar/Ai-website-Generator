@@ -231,6 +231,10 @@ public class aiService {
         System.out.println("========================================");
         System.out.println("CALLING LLM");
         System.out.println("========================================");
+        System.out.println("========== WEBSITE GENERATOR ==========");
+        System.out.println("Project ID: " + projectId);
+        System.out.println("Existing files count: " + projectFilesList.size());
+        System.out.println("User prompt: " + prompt);
 
         aiResponseDto aiResponse =
                 chatClient
@@ -238,6 +242,17 @@ public class aiService {
                         .user(userContext)
                         .call()
                         .entity(aiResponseDto.class);
+        if (aiResponse == null) {
+            throw new RuntimeException("Website generator returned an empty response");
+        }
+
+        System.out.println("========== GENERATED RESPONSE ==========");
+        System.out.println("Operation: " + aiResponse.getOperation());
+        System.out.println("Message: " + aiResponse.getMessage());
+        System.out.println("Files returned: " +
+                (aiResponse.getFiles() == null
+                        ? 0
+                        : aiResponse.getFiles().size()));
         System.out.println();
         System.out.println("========================================");
         System.out.println("AI DTO RESPONSE");

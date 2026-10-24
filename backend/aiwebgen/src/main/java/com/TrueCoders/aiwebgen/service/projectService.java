@@ -99,4 +99,67 @@ public class projectService {
 
         return result;
     }
+
+
+    public String createProjectForVoice(
+            String userId,
+            String projectName
+    ) {
+        if (projectName == null || projectName.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Project name cannot be empty"
+            );
+        }
+
+        user user = userRepository.findById(userId)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found")
+                );
+
+        projects project = new projects();
+
+        String projectId = UUID.randomUUID().toString();
+
+        project.setProjectId(projectId);
+        project.setProjectName(projectName.trim());
+        project.setUser(user);
+
+        projectsRepository.save(project);
+
+        return projectId;
+    }
+
+    public projects findProjectForVoiceByName(
+            String userId,
+            String projectName
+    ) {
+        if (projectName == null || projectName.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Project name cannot be empty."
+            );
+        }
+
+        List<projects> matches =
+                projectsRepository
+                        .findByUser_UseridAndProjectNameIgnoreCase(
+                                userId,
+                                projectName.trim()
+                        );
+
+        if (matches.isEmpty()) {
+            throw new RuntimeException(
+                    "No project named '" + projectName
+                            + "' was found in your account."
+            );
+        }
+
+        if (matches.size() > 1) {
+            throw new RuntimeException(
+                    "Multiple projects named '" + projectName
+                            + "' exist. Please specify a more distinct name."
+            );
+        }
+
+        return matches.get(0);
+    }
 }
