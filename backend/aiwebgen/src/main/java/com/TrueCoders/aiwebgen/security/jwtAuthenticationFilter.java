@@ -154,10 +154,16 @@ public class jwtAuthenticationFilter
                 }
             }
 
-        } catch (Exception e) {
+        }  catch (Exception e) {
+        SecurityContextHolder.clearContext();
 
-            e.printStackTrace();
-        }
+        System.err.println(
+                "JWT authentication failed for " +
+                        request.getServletPath() +
+                        ": " + e.getClass().getSimpleName() +
+                        " - " + e.getMessage()
+        );
+    }
 
 
         // ========================================================

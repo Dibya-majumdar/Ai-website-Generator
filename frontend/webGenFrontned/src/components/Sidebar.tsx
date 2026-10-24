@@ -1,9 +1,12 @@
+
 import {
   LayoutGrid,
   LogOut,
+  Mic,
   Sparkles,
   Terminal,
 } from "lucide-react";
+
 import { NavLink, useNavigate } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
@@ -31,6 +34,7 @@ export default function Sidebar() {
       </NavLink>
 
       <nav className="flex flex-1 flex-col gap-1">
+        {/* Existing Projects link */}
         <NavLink
           to="/dashboard"
           className={({ isActive }) =>
@@ -43,6 +47,21 @@ export default function Sidebar() {
         >
           <LayoutGrid className="size-4" />
           Projects
+        </NavLink>
+
+        {/* NEW: VoiceAgent link directly under Projects */}
+        <NavLink
+          to="/voice-agent"
+          className={({ isActive }) =>
+            `flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors ${
+              isActive
+                ? "bg-sidebar-accent text-sidebar-accent-foreground"
+                : "text-sidebar-foreground/80 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            }`
+          }
+        >
+          <Mic className="size-4" />
+          VoiceAgent
         </NavLink>
 
         <div className="mt-4 rounded-md border border-sidebar-border bg-background/40 p-3">

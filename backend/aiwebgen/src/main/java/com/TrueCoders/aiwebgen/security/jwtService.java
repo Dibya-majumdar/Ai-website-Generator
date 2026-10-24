@@ -89,19 +89,22 @@ public class jwtService {
             String token,
             UserDetails userDetails
     ) {
-
         try {
+            Claims claims = Jwts.parser()
+                    .verifyWith(getSigningKey())
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
 
-            String userId =
-                    extractUserId(token);
+            String userId = claims.getSubject();
+            Date expiration = claims.getExpiration();
 
-            return userId.equals(
-                    userDetails.getUsername()
-            );
+            return userId != null
+                    && userId.equals(userDetails.getUsername())
+                    && expiration != null
+                    && expiration.after(new Date());
 
-        } catch (JwtException |
-                 IllegalArgumentException e) {
-
+        } catch (JwtException | IllegalArgumentException e) {
             return false;
         }
     }

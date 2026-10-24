@@ -1,9 +1,11 @@
+
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import Dashboard from "@/pages/Dashboard";
 import Login from "@/pages/Login";
 import Project from "@/pages/Project";
 import Register from "@/pages/Register";
+import VoiceAgentPage from "@/pages/VoiceAgentPage";
 
 import ProtectedRoute from "@/components/ProtectedRoute";
 
@@ -15,15 +17,9 @@ function App() {
         element={<Navigate to="/login" replace />}
       />
 
-      <Route
-        path="/login"
-        element={<Login />}
-      />
+      <Route path="/login" element={<Login />} />
 
-      <Route
-        path="/register"
-        element={<Register />}
-      />
+      <Route path="/register" element={<Register />} />
 
       <Route
         path="/dashboard"
@@ -39,6 +35,16 @@ function App() {
         element={
           <ProtectedRoute>
             <Project />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* NEW: Voice Agent page */}
+      <Route
+        path="/voice-agent"
+        element={
+          <ProtectedRoute>
+            <VoiceAgentPage />
           </ProtectedRoute>
         }
       />
